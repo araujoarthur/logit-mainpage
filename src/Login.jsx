@@ -18,8 +18,8 @@ export default class Login extends React.Component {
         return (
         <div id={this.props.id} className="p-20">
             <div className="flex items-center justify-center">
-                <span role={'button'} className="bg-petrol align-middle text-icewhite text-xl md:text-5xl p-6 rounded-xl">
-                    <IconWrapper className="border-solid border-2" icon={<IoRocket />}/><span className="text-center align-middle inline-block items-center justify-center border-2 border-solid"> To the App! </span>
+                <span role={'button'} className="flex p-5 items-center justify-center bg-petrol align-middle text-icewhite text-xl md:text-5xl rounded-xl">
+                    <IconWrapper className="" icon={<IoRocket />}/><span className="border-solid border-2"> To the App! </span>
                 </span>
             </div>
         </div>
