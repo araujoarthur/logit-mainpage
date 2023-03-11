@@ -40,7 +40,7 @@ module.exports = {
     variants:['hover', 'focus']
   },
   {
-    pattern: /(bg|text|border|3shadow)-(pureblack|petrol|darkpetrol|aquagreen|limegreen|limegreenFaded|icewhite|salmonpink)/,
+    pattern: /(bg|text|border|shadow)-(pureblack|petrol|darkpetrol|aquagreen|limegreen|limegreenFaded|icewhite|salmonpink)/,
     variants:['hover', 'focus']
   }]
 }

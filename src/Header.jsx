@@ -11,6 +11,7 @@ const navigation = [
     {title:"Pricing", icon:<IoPodium />, href:"#", current: false},
 ]
 
+
 export default class Header extends React.Component {
     render() {
         return (
@@ -32,9 +33,11 @@ class Navbar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: navigation
+            items: navigation,
+            classes:''
         }
         this.handleItemClick = this.handleItemClick.bind(this);
+        this.navbarRef = React.createRef();
     }
 
     handleItemClick(event, item) {
@@ -64,13 +67,31 @@ class Navbar extends React.Component {
         document.documentElement.scrollTop = document.body.scrollTop = position_rect.top;
     }
 
+    componentDidMount(){
+        var { offsetTop } = this.navbarRef.current;
+        offsetTop = offsetTop;
+        var navRef = this.navbarRef.current;
+        let isFixed = false;
+        document.addEventListener("scroll", () => {
+            console.log(isFixed)
+            if (window.pageYOffset >= offsetTop && isFixed == false) {
+                navRef.classList.add('w-full', 'top-0', 'fixed');
+                isFixed = true;
+            } else if (window.pageYOffset <= offsetTop && isFixed == true) {
+                navRef.classList.remove('w-full', 'top-0', 'fixed');
+                isFixed = false;
+            }
+        });
+    }
+
     render() {
         return (
-        <div className="flex items-center justify-center text-icewhite font-nunito font-bold bg-petrol py-5 text-center">
-            <ul>
-                {navigation.map((item) => {return <Navitem key={item.title} item={item} handleItemClick={this.handleItemClick} />})}
-            </ul>
-            
+        <div className="w-full">
+            <div id="navbar" ref={this.navbarRef} className="flex items-center justify-center text-icewhite font-nunito font-bold bg-petrol py-5 text-center">
+                <ul>
+                    {navigation.map((item) => {return <Navitem key={item.title} item={item} handleItemClick={this.handleItemClick} />})}
+                </ul>
+            </div>
         </div>
         );
     }

@@ -17,7 +17,7 @@ class App extends React.Component {
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi pharetra vestibulum dui, mollis hendrerit eros posuere ut. Aenean ac nisi urna. Aenean quis rhoncus odio. Pellentesque ultrices ac neque a consequat. Cras nec lobortis lacus. Morbi dapibus efficitur magna at suscipit.</p>
         </ContentBox>
         <ButtonBox id="loginbox" background="icewhite" shadow="lg" shadowColor="salmonpink" icon={<IoRocket />} href="#">To The App!</ButtonBox>
-        <ButtonBox id="signupbox" background="aquagreen" buttonBackground="salmonpink" shadow="lg" shadowColor="darkpetrol" icon={<IoRocket />} href="#">To The App!</ButtonBox>
+        <ButtonBox id="signupbox" background="aquagreen" textColor="darkpetrol" buttonBackground="salmonpink" shadow="lg" shadowColor="limegreenFaded" icon={<IoRocket />} href="#">Create an Account!</ButtonBox>
       </>
     );
   }
