@@ -6,8 +6,8 @@ import './index.css'
 const navigation = [
     {title:"About Us", icon:<IoBook />, href:"#aboutus", current: true},
     {title:"Log In", icon:<IoLogIn />, href:"#loginbox", current: false},
-    {title:"Sign Up", icon:<IoPencil />, href:"#", current: false},
-    {title:"Docs", icon:<IoHelpCircle />, href:"#", current: false},
+    {title:"Sign Up", icon:<IoPencil />, href:"#signupbox", current: false},
+    {title:"Docs", icon:<IoHelpCircle />, href:"#documentationbox", current: false},
     {title:"Pricing", icon:<IoPodium />, href:"#", current: false},
 ]
 
@@ -104,7 +104,7 @@ class Navitem extends React.Component {
     }
 
     render() {
-        const { item , handleItemClick} = this.props;
+        const { item , handleItemClick } = this.props;
         return (
             <li className="mt-5 mb-5 md:mt-0 md:mb-0 inline-block mr-2 ml-2 align-middle">
                 <a onClick={(e) => handleItemClick(e, item)} className={`hover:shadow-sm hover:shadow-darkpetrol inline align-middle p-2 rounded uppercase bg-limegreen ${item.current ? '' : 'bg-opacity-30'}`} href={item.href}>{item.icon && <IconWrapper icon={item.icon}/>}<span className="align-middle">{item.title}</span></a>
