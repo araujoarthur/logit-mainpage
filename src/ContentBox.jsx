@@ -9,9 +9,10 @@ export default class ContentBox extends React.Component {
             throw new Error('Missing ID on JSX Tag.'); 
         }
     }
+
     render() {
         return (
-            <div className='px-20 pb-10 font-nunito bg-salmonpink'>
+            <div ref={ this.props.passRef }className='px-20 pb-10 font-nunito bg-salmonpink'>
                 <div className='text-center p-5'>
                     <h1 id={this.props.id} className={`font-semibold text-petrol text-3xl ${this.classes}`.trim()}>{this.props.title}</h1>
                 </div>

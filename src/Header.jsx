@@ -1,18 +1,23 @@
 import React from 'react'
 import IconWrapper from './IconWrapper';
-import { IoLogIn, IoBook, IoPencil, IoHelpCircle, IoPodium} from "react-icons/io5";
+import { IoLogIn, IoBook, IoPencil, IoHelpCircle, IoPodium, IoChatboxEllipsesSharp} from "react-icons/io5";
 import './index.css'
 
 const navigation = [
-    {title:"About Us", icon:<IoBook />, href:"#aboutus", current: true},
-    {title:"Log In", icon:<IoLogIn />, href:"#loginbox", current: false},
-    {title:"Sign Up", icon:<IoPencil />, href:"#signupbox", current: false},
-    {title:"Docs", icon:<IoHelpCircle />, href:"#documentationbox", current: false},
-    {title:"Pricing", icon:<IoPodium />, href:"#", current: false},
+    {title:"About Us", refName:'AboutUs', icon:<IoBook />, href:"#aboutus", current: true, reference:undefined},
+    {title:"Log In", refName:'Login', icon:<IoLogIn />, href:"#loginbox", current: false, reference:undefined},
+    {title:"Sign Up", refName:'SignUp', icon:<IoPencil />, href:"#signupbox", current: false, reference:undefined},
+    {title:"Docs", refName:'Documentation', icon:<IoHelpCircle />, href:"#documentationbox", current: false, reference:undefined},
+    {title:"Pricing", refName:'Pricing', icon:<IoPodium />, href:"#", current: false, reference:undefined},
 ]
 
 
 export default class Header extends React.Component {
+    constructor(props){
+        super(props);
+        this.references = { ...this.props.references };
+    }
+
     render() {
         return (
             <>
@@ -22,7 +27,7 @@ export default class Header extends React.Component {
                         <span className="text-xs text-petrol">The cloud-based Logging API.</span>
                     </div> 
                 </div>
-                <Navbar />
+                <Navbar references={ this.references } />
             </>
         )
     }
@@ -32,17 +37,48 @@ class Navbar extends React.Component {
     
     constructor(props) {
         super(props);
-        this.state = {
-            items: navigation,
-            classes:''
-        }
-        this.handleItemClick = this.handleItemClick.bind(this);
+
         this.navbarRef = React.createRef();
+        this.references = { ...this.props.references };
+
+        this.state = {
+            items: navigation.map((item) => { item.reference = this.references[item.refName]; return item }),
+            references:  { ...this.references },
+            boundaries: {}
+        }
+
+        this.handleItemClick = this.handleItemClick.bind(this);
+        
+    }
+
+    handleScrolling(){
+        const currentPos = document.documentElement.scrollTop;
+        let [activeElement] = this.state.boundaries.filter((item) => item[1] <= currentPos && item[2] > currentPos);
+        activeElement = activeElement ? activeElement : this.state.boundaries[0];
+        
+        const activeItem = this.state.items.findIndex((item) => item.current)
+        const currIndex = this.state.items.findIndex((item) => {
+            return (item.refName == activeElement[0])
+        });
+        
+        const new_items = [...this.state.items];
+        new_items[activeItem].current = false;
+        new_items[currIndex].current = true;
+
+        if (!(activeItem == currIndex)){
+            this.setState({
+                ...this.state,
+                items:new_items
+            });
+        }
     }
 
     handleItemClick(event, item) {
         event.preventDefault();
-        const new_nav = this.state.items.map((itm) => {
+
+        const itemOffsetTop = item.reference.current.offsetTop
+
+        const new_nav = this.state.items.map((itm) => { /* Start of .map callback. */
             let curr_index = navigation.findIndex((i) => {itm === i});
 
             if ((itm === item) && (itm.current == false)) {
@@ -52,28 +88,24 @@ class Navbar extends React.Component {
             }
 
             navigation[curr_index] = itm;
-            
             return itm;
         });
 
         this.setState(() => {
-            
             return {
                 items: new_nav,
             }
-        })
+        });
 
-        let position_rect = document.querySelector(item.href).getBoundingClientRect();
-        document.documentElement.scrollTop = document.body.scrollTop = position_rect.top;
+        document.documentElement.scrollTop = itemOffsetTop;
+        
     }
 
     componentDidMount(){
         var { offsetTop } = this.navbarRef.current;
-        offsetTop = offsetTop;
         var navRef = this.navbarRef.current;
         let isFixed = false;
         document.addEventListener("scroll", () => {
-            console.log(isFixed)
             if (window.pageYOffset >= offsetTop && isFixed == false) {
                 navRef.classList.add('w-full', 'top-0', 'fixed');
                 isFixed = true;
@@ -81,6 +113,14 @@ class Navbar extends React.Component {
                 navRef.classList.remove('w-full', 'top-0', 'fixed');
                 isFixed = false;
             }
+
+            this.setState({
+                boundaries: this.state.items.map((item) => {
+                    return [item.refName, item.reference.current ? item.reference.current.offsetTop : 'nil', item.reference.current ? item.reference.current.offsetTop + item.reference.current.offsetHeight : 'nil']
+                }).sort((a, b) => this.state.boundaries[a] > this.state.boundaries[b])
+            }, () => this.handleScrolling())
+
+            
         });
     }
 
