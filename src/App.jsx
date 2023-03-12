@@ -4,9 +4,12 @@ import './App.css'
 import Header from './Header.jsx'
 import ContentBox from './ContentBox'
 import ButtonBox from './ButtonBox'
-import PricingGrid, { PricingBox, PlanBenefits, PlanBenefit, PurchaseBox } from './PricingGrid'
+import PricingGrid, { PricingBox, PlanBenefits, PlanBenefit } from './PricingGrid'
+import PurchaseBox from "./PurchaseBox"
+import CustomPlan from './CustomPlan'
 import { IoRocket, IoHelpCircle } from 'react-icons/io5'
 import './index.css'
+
 
 
 class App extends React.Component {
@@ -36,7 +39,7 @@ class App extends React.Component {
         <ButtonBox passRef={ this.references.Documentation } id="documentationbox" background="salmonpink" buttonBackground="aquagreen" textColor="icewhite" shadow="lg" shadowColor="darkpetrol" icon={ <IoHelpCircle /> }>Read the Documentation</ButtonBox>
         <PricingGrid id="pricingbox" columns='3' gap='3' passRef={ this.references.Pricing }>
 
-          <PricingBox planName="Plan 1" purchaseBox={<PurchaseBox priceFrom={25000} priceFor={2500} discountPercent={true} locale='en-US' currency='USD' />}>
+          <PricingBox planName="Plan 1" purchaseBox={<PurchaseBox planIdentifier={1} priceFrom={25000} priceFor={2500} discountPercent={true} locale='en-US' currency='USD' />}>
             <PlanBenefits>
               <PlanBenefit>
                 Pricing Benefit 1
@@ -53,7 +56,7 @@ class App extends React.Component {
             </PlanBenefits>
           </PricingBox>
 
-          <PricingBox planName="Plan 2" purchaseBox={<PurchaseBox priceFrom={780000} priceFor={120000} discountPercent={true} locale='en-US' currency='USD' />}>
+          <PricingBox planName="Plan 2" purchaseBox={<PurchaseBox planIdentifier={2} priceFrom={780000} priceFor={120000} discountPercent={true} locale='en-US' currency='USD' />}>
             <PlanBenefits>
               <PlanBenefit>
                 Plan 2 Benefit 1
@@ -70,7 +73,7 @@ class App extends React.Component {
             </PlanBenefits>
           </PricingBox>
 
-          <PricingBox planName="Plan 3" purchaseBox={<PurchaseBox priceFor={120000} locale='en-US' currency='USD' />}>
+          <PricingBox planName="Plan 3" purchaseBox={<PurchaseBox planIdentifier={3} locale='en-US' currency='USD' />}>
             <PlanBenefits>
               <PlanBenefit>
                 Plan 3 Benefit 1
@@ -87,7 +90,14 @@ class App extends React.Component {
             </PlanBenefits>
           </PricingBox>
         </PricingGrid>
-        <h2 className='pt-10 text-5xl bg-icewhite text-darkpetrol font-nunito text-center'>... or build your own plan! </h2>
+        
+        <PricingGrid title="... or build your own plan!" columns='3'>
+          <div></div>
+          <CustomPlan>
+
+          </CustomPlan>
+          <div></div>
+        </PricingGrid>
       </>
     );
   }

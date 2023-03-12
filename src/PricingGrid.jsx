@@ -19,8 +19,8 @@ export default class PricingGrid extends React.Component {
         const { columns, gap } = this.props;
         return(
             <>
-                <h2 className="pt-10 text-5xl bg-icewhite text-darkpetrol font-nunito text-center">Our Deals</h2>
-                <div ref={this.props.passRef} className={`bg-icewhite items-center justify-center justify-items-center p-10 grid grid-cols-1 md:grid-cols-${columns ? columns : '3'} gap-0 md:gap-${gap ? gap : '2'}`} id={this.props.id}>
+                <h2 className="pt-10 text-5xl bg-icewhite text-darkpetrol font-nunito text-center">{this.props.title ? this.props.title : 'Our Deals'}</h2>
+                <div ref={this.props.passRef} className={`bg-icewhite items-center justify-center justify-items-center p-10 grid grid-cols-1 md:grid-cols-${columns ? columns : '3'} gap-0 md:gap-${gap ? gap : '2'} ${this.props.className ? this.props.className : ''}`.trim()} id={this.props.id}>
                     {this.props.children}
                 </div>
             </>
@@ -34,7 +34,7 @@ export class PricingBox extends React.Component {
     }
 
     render() {
-        const { planName, planPrice, planPeriod } = this.props;
+        const { planName } = this.props;
         return (
         <div className="mb-4 z-0 md:mb-0 h-full w-full shadow-sm shadow-salmonpink rounded-md p-5 bg-salmonpink bg-opacity-20 backdrop-blur-lg">
             <h1 className="text-center font-black text-petrol text-xl font-nunito">{ planName.toUpperCase() }</h1>
@@ -80,7 +80,12 @@ export class PlanPrice extends React.Component {
                     { priceFrom && <span className='text-[10px]'>
                         from <span className='line-through'>{(locale && currency) ? formatMoney(priceFrom, locale, styleObj) : formatMoney(priceFrom)}</span>
                     </span> }
-                    <span className='font-black drop-shadow-2xl'> for {(locale && currency) ? formatMoney(priceFor, locale, styleObj) : formatMoney(priceFor)}</span>
+  
+                    {priceFor ? <span className='font-black drop-shadow-2xl'> 
+                        for {(locale && currency) ? formatMoney(priceFor, locale, styleObj) : formatMoney(priceFor)}
+                    </span> : <span className='font-black drop-shadow-2xl'> 
+                        for Free!
+                    </span>}
                 </span>
                 {discountPercent && <span className='bg-darkpetrol py-1 px-2 rounded text-salmonpink'>{((priceFrom - priceFor)/(priceFrom)).toLocaleString('pt-BR', {style:'percent'})} OFF</span>}
             </div>
@@ -88,26 +93,3 @@ export class PlanPrice extends React.Component {
     }
 }
 
-export class PurchaseBox extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            priceFrom: this.props.priceFrom,
-            priceFor: this.props.priceFor,
-            planIdentifier: this.props.planIdentifier
-        }
-    }
-    render() {
-        const { priceFrom, priceFor, discountPercent = false, locale = 'pt-BR', currency = 'BRL'} = this.props;
-
-        return (
-            <>
-                <PlanPrice priceFrom={priceFrom} priceFor={priceFor} discountPercent={discountPercent} locale={locale} currency={currency}/>
-                <div className='block mt-10 text-center'>
-                    <span role={'button'} className='p-2 bg-petrol font-black text-3xl font-nunito text-icewhite rounded-lg shadow-sm shadow-limegreenFaded'>Acquire Now!</span>
-                </div>
-            </>
-        );
-        
-    }
-}
