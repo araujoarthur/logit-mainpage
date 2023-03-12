@@ -107,10 +107,10 @@ class Navbar extends React.Component {
         let isFixed = false;
         document.addEventListener("scroll", () => {
             if (window.pageYOffset >= offsetTop && isFixed == false) {
-                navRef.classList.add('w-full', 'top-0', 'fixed');
+                navRef.classList.add('w-full', 'top-0', 'fixed', 'z-50');
                 isFixed = true;
             } else if (window.pageYOffset <= offsetTop && isFixed == true) {
-                navRef.classList.remove('w-full', 'top-0', 'fixed');
+                navRef.classList.remove('w-full', 'top-0', 'fixed', 'z-50');
                 isFixed = false;
             }
 
