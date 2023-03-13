@@ -19,8 +19,8 @@ export default class PricingGrid extends React.Component {
         const { columns, gap } = this.props;
         return(
             <>
-                <h2 className="pt-10 text-5xl bg-icewhite text-darkpetrol font-nunito text-center">{this.props.title ? this.props.title : 'Our Deals'}</h2>
-                <div ref={this.props.passRef} className={`bg-icewhite items-center justify-center justify-items-center p-10 grid grid-cols-1 md:grid-cols-${columns ? columns : '3'} gap-0 md:gap-${gap ? gap : '2'} ${this.props.className ? this.props.className : ''}`.trim()} id={this.props.id}>
+                <h2 ref={this.props.passRef} className="pt-10 text-5xl bg-icewhite text-darkpetrol font-nunito text-center">{this.props.title ? this.props.title : 'Our Deals'}</h2>
+                <div  className={`bg-icewhite items-center justify-center justify-items-center p-10 grid grid-cols-1 md:grid-cols-${columns ? columns : '3'} gap-0 md:gap-${gap ? gap : '2'} ${this.props.className ? this.props.className : ''}`.trim()} id={this.props.id}>
                     {this.props.children}
                 </div>
             </>

@@ -1,23 +1,65 @@
 import React from 'react'
 import { PricingBox } from './PricingGrid';
 import { IoChevronDown, IoChevronUp, IoChevronBack, IoChevronForward } from 'react-icons/io5'
+import PurchaseBox from './PurchaseBox';
 
 
 export default class CustomPlan extends React.Component {
     constructor(props) {
         super(props);
 
-        this.UsersInputRef = React.createRef();
-        this.LogsInputRef = React.createRef();
-        this.AppsInputRef = React.createRef();
+        this.UsersRef = {input: React.createRef(), utility: React.createRef()};
+        this.LogsRef = {input: React.createRef(), utility: React.createRef()};
+        this.AppsRef = {input: React.createRef(), utility: React.createRef()};
+
+        this.handleChange = this.handleChange.bind(this);
+
+        this.state = {
+            unitValue: {
+                users:500,
+                logs:1,
+                apps:1000
+            },
+            purchaseValue: {
+                users:0,
+                logs:0,
+                apps:0,
+            }
+        }
+
+    }
+
+    handleChange(item, fn_callback = (count, unitValue) => { return count * unitValue }) {
+        this.setState(previousState => {console.log(previousState); return {
+            purchaseValue:{
+                ...previousState.purchaseValue,
+                [item.state.utilityIdentifier]: fn_callback(item.state.count, previousState.unitValue[item.state.utilityIdentifier])
+            }
+        }});
     }
 
     render() {
+        const { users: usersPrice, logs: logsPrice, apps: appsPrice } = this.state.purchaseValue;
         return (
-            <PricingBox planName="Custom Plan">
-                <SelectUtility ref={ this.UsersInputRef } utility="Users"></SelectUtility>
-                <SelectUtility ref={ this.LogsInputRef } utility="Logs/Month" incrementalOffset={10} ></SelectUtility>
-                <SelectUtility ref={ this.AppsInputRef } utility="Apps"></SelectUtility>
+            <PricingBox planName="Custom Plan" purchaseBox={<PurchaseBox priceFor={usersPrice + logsPrice + appsPrice} />}>
+                <SelectUtility 
+                    utilityIdentifier="users" 
+                    onChange={this.handleChange} 
+                    utilityName="Users" 
+                />
+                <SelectUtility 
+                    utilityIdentifier="logs" 
+                    ref={ this.LogsRef.utility } 
+                    passRef={ this.LogsRef.input } 
+                    onChange={this.handleChange}  
+                    utilityName="Logs/Month" 
+                    incrementalOffset={1000} 
+                />
+                <SelectUtility 
+                    utilityIdentifier="apps" 
+                    onChange={this.handleChange}  
+                    utilityName="Apps"
+                />
             </PricingBox>
         );
     }
@@ -25,11 +67,19 @@ export default class CustomPlan extends React.Component {
 }
 
 export class SelectUtility extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
 
     render() {
         return (
         <div className="flex items-center justify-center justify-items-center">
-            <span className="mr-auto font-semibold font-nunito text-darkpetrol"> {this.props.utility} </span><UtilityInput incrementalOffset={this.props.incrementalOffset ? this.props.incrementalOffset : 1} />
+            <span className="mr-auto font-semibold font-nunito text-darkpetrol"> {this.props.utilityName} </span>
+            <UtilityInput 
+                utilityIdentifier={ this.props.utilityIdentifier } 
+                onChange={this.props.onChange} 
+                incrementalOffset={this.props.incrementalOffset ? this.props.incrementalOffset : 1} />
         </div>
         );
     }
@@ -40,7 +90,8 @@ class UtilityInput extends React.Component {
         super(props);
 
         this.state = {
-            count: this.props.incrementalOffset
+            count: this.props.incrementalOffset,
+            utilityIdentifier: this.props.utilityIdentifier
         }
 
         this.incrementCounter = this.incrementCounter.bind(this);
@@ -49,13 +100,19 @@ class UtilityInput extends React.Component {
 
 
     incrementCounter () {
-        this.setState({
-            count: this.state.count + this.props.incrementalOffset
-        });
+        this.setState(previousState => {return {
+            count: previousState.count + this.props.incrementalOffset
+        }}, () => this.props.onChange(this));
+
+        
     }
 
     decrementCounter() {
-        return (this.state.count > this.props.incrementalOffset && this.setState({ count: this.state.count - this.props.incrementalOffset }));
+        return (this.state.count > this.props.incrementalOffset && this.setState(previousState => {return { count: previousState.count - this.props.incrementalOffset }}, () => this.props.onChange(this)));
+    }
+
+    componentDidMount() {
+        this.props.onChange(this); // Sets the initial value.
     }
 
     render() {
