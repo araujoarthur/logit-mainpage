@@ -28,6 +28,9 @@ export default class Footer extends React.Component {
                             </FooterList>
                         </FooterColumn>
                     </div>
+                    <Copyright>
+                        LogIt - 2023
+                    </Copyright>
 
                 </footer>
             );
@@ -65,4 +68,12 @@ const FooterListItem = ( {children, icon = <IoCaretForward />, href}) => {
             </a>
         </li>
     );
+}
+
+const Copyright = ( { children }) => {
+    return (
+        <div className='text-center align-middle text-xs'>
+            <span className="text-icewhite" role={"note"}>© { children } </span>
+        </div>
+    )
 }
