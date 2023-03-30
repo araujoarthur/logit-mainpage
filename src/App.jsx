@@ -7,6 +7,7 @@ import ButtonBox from './ButtonBox'
 import PricingGrid, { PricingBox, PlanBenefits, PlanBenefit } from './PricingGrid'
 import PurchaseBox from "./PurchaseBox"
 import CustomPlan from './CustomPlan'
+import Footer from './Footer'
 import { IoRocket, IoHelpCircle } from 'react-icons/io5'
 import './index.css'
 
@@ -99,6 +100,7 @@ class App extends React.Component {
             <div></div>
           </PricingGrid>
         </div>
+        <Footer></Footer>
       </>
     );
   }

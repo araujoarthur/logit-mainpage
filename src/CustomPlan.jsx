@@ -41,7 +41,7 @@ export default class CustomPlan extends React.Component {
     render() {
         const { users: usersPrice, logs: logsPrice, apps: appsPrice } = this.state.purchaseValue;
         return (
-            <PricingBox planName="Custom Plan" purchaseBox={<PurchaseBox priceFor={usersPrice + logsPrice + appsPrice} />}>
+            <PricingBox planName="Custom Plan" purchaseBox={<PurchaseBox locale="en-US" currency="USD" priceFor={usersPrice + logsPrice + appsPrice} />}>
                 <SelectUtility 
                     utilityIdentifier="users" 
                     onChange={this.handleChange} 
